@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 b-cov
+=======
+lib-cov
+>>>>>>> ca2d0e5ea87cf0193885c93c21a574798d23a6a8
 *.seed
 *.log
 *.csv
