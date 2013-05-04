@@ -1,0 +1,20 @@
+{
+  "author": "Tim McDuffie <timothy.mcduffie@gmail.com (http://www.timmcduffie.com)",
+  "name": "grimlock-restapi",
+  "homepage": "http://www.timmcduffie.com/",
+  "description": "Node REST API for timmcduffie.com",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tjmcduffie/grimlock-restapi.git"
+  },
+  "main": "restapi",
+  "directories": "./v1",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "dependencies": {
+    "restify": "2.4.1"
+  },
+  "private": "true"
+}
