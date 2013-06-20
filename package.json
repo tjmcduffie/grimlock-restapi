@@ -14,7 +14,11 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "restify": "2.4.1"
+    "extend": "1.x",
+    "mongodb": "1.x",
+    "nodemon": "*",
+    "restify": "2.4.1",
+    "restify-validator": "*"
   },
-  "private": "true"
+  "private": true
 }
