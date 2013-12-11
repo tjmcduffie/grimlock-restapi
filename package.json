@@ -8,8 +8,6 @@
     "type": "git",
     "url": "git://github.com/tjmcduffie/grimlock-restapi.git"
   },
-  "main": "restapi",
-  "directories": "./v1",
   "engines": {
     "node": ">=0.8"
   },
@@ -17,8 +15,9 @@
     "extend": "1.x",
     "mongodb": "1.x",
     "nodemon": "*",
-    "restify": "2.4.1",
-    "restify-validator": "*"
+    "restify": "2.x",
+    "restify-validator": "*",
+    "dtrace-provider": "~0.2.8"
   },
   "private": true
 }
