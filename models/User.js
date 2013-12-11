@@ -4,19 +4,12 @@ var Model = require(process.cwd() + '/lib/Model');
 
 
 var UserModel = function() {
-  this.collectionName = 'projects';
+  this.collectionName = 'users';
 
   util.base(this);
 };
 util.inherits(UserModel, Model);
 
-UserModel.prototype.getUsersCollection = function(success) {
-  try {
-    this.getCollection(callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
 
 UserModel.prototype.findAll = function(callback) {
   try {
@@ -26,6 +19,7 @@ UserModel.prototype.findAll = function(callback) {
   }
 };
 
+
 UserModel.prototype.findOneById = function(id, callback) {
   try {
     util.base(this, 'findOneById', id, callback);
@@ -34,41 +28,66 @@ UserModel.prototype.findOneById = function(id, callback) {
   }
 };
 
-UserModel.prototype.findOneByName = function(name, callback) {
+
+UserModel.prototype.findOneByFullName = function(name, callback) {
   try {
     var props = {
-      username: name
+      fullname: name
     };
-    this.findOneByProps(name, callback);
+    this.findOneByProps(props, callback);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
-UserModel.prototype.update = function(id, project, callback) {
+
+UserModel.prototype.findOneByLinkedInId = function(lid, callback) {
   try {
-    util.base(this, 'update', id, project, callback);
+    var props = {
+      lid: lid
+    };
+    this.findOneByProps(props, callback);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
-UserModel.prototype.del = function(projectId, callback) {
+
+UserModel.prototype.update = function(id, user, callback) {
   try {
-    util.base(this, 'del', projectId, callback);
+    util.base(this, 'update', id, user, callback);
   } catch (e) {
     console.log(e);
   }
 };
 
-UserModel.prototype.insert = function(projects, callback) {
+
+UserModel.prototype.del = function(userId, callback) {
   try {
-    util.base(this, 'insert', projects, callback);
+    util.base(this, 'del', userId, callback);
   } catch (e) {
     console.log(e);
   }
 };
 
-UserModel.prototype.findOneByName = function(name, callback)
+
+UserModel.prototype.insert = function(user, callback) {
+  try {
+    util.base(this, 'insert', user, callback);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+
+
+UserModelData = function(data) {
+  this._id = data._id;
+  this.firstName = data.firstname || '';
+  this.lastName = data.lastname || '';
+  this.fullname = data.lastname || '';
+  this.lid = data.lid;
+  this.email = data.email || '';
+};
 
 module.exports = UserModel;
