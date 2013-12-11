@@ -15,28 +15,25 @@ UserController.prototype.setRoutes = function() {
 
 UserController.prototype.postUser = function create(req, res, next) {
   // do some creation stuff here
-  res.send(201, Math.random().toString(36).substr(3, 8));
+  this.respondWith(res, { status: 201, content: [{ foo: 'bar' }] });
   return next();
 };
 
 UserController.prototype.getUserByName = function(req, res, next) {
   // do some retrieval here
-  var response = this.buildResponse(200, {foo: 'bar'}, 'youre fucking awesome');
-  res.send(response);
+  this.respondWith(res, { status: 200, content: [{ foo: 'bar' }] });
   return next();
 };
 
 UserController.prototype.putUser = function(req, res, next) {
   // do some retrieval here
-  var response = this.buildResponse(200, {foo: 'bar'}, 'youre fucking awesome');
-  res.send(response);
+  this.respondWith(res, { status: 200, content: [{ foo: 'bar' }] });
   return next();
 };
 
 UserController.prototype.deleteUser = function(req, res, next) {
   // do some retrieval here
-  var response = this.buildResponse(200, {foo: 'bar'}, 'youre fucking awesome');
-  res.send(response);
+  this.respondWith(res, { status: 200, content: [{ foo: 'bar' }] });
   return next();
 };
 

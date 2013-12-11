@@ -15,56 +15,25 @@ ProfileController.prototype.setRoutes = function() {
 
 ProfileController.prototype.postProfile = function create(req, res, next) {
   // do some creation stuff here
-  var code = 201;
-  var data = {
-    foo: 'bar'
-  }
-  var message = 'youre fucking awesome';
-  res.send(Route.createResponse(code, data, message));
+  this.respondWith(res, { status: 201, content: [{ foo: 'bar' }] });
   return next();
 };
 
 ProfileController.prototype.getProfileByName = function(req, res, next) {
   // do some retrieval here
-  var code = 200;
-  var data = {
-    foo: 'bar'
-  }
-  var message = 'youre fucking awesome';
-  res.send(Route.createResponse(code, data, message));
+  this.respondWith(res, { status: 200, content: [{ foo: 'bar' }] });
   return next();
 };
 
 ProfileController.prototype.putProfile = function(req, res, next) {
   // do some retrieval here
-  var code = 200;
-  var data = {
-    foo: 'bar'
-  }
-  var message = 'youre fucking awesome';
-  res.send(Route.createResponse(code, data, message));
-  return next();
-};
-
-ProfileController.prototype.headProfile = function(req, res, next) {
-  // do some retrieval here
-  var code = 200;
-  var data = {
-    foo: 'bar'
-  }
-  var message = 'youre fucking awesome';
-  res.send(Route.createResponse(code, data, message));
+  this.respondWith(res, { status: 200, content: [{ foo: 'bar' }] });
   return next();
 };
 
 ProfileController.prototype.deleteProfile = function(req, res, next) {
   // do some retrieval here
-  var code = 200;
-  var data = {
-    foo: 'bar'
-  }
-  var message = 'youre fucking awesome';
-  res.send(Route.createResponse(code, data, message));
+  this.respondWith(res, { status: 200, content: [{ foo: 'bar' }] });
   return next();
 };
 
