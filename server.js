@@ -13,6 +13,6 @@ server.use(restify.fullResponse());
 
 bootstrap(server);
 
-server.listen(8080, function() {
+server.listen(config.server.port, function() {
   console.log('listening to port 8080', server.name, server.url);
 });
