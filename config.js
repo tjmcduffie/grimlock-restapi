@@ -4,21 +4,18 @@ exports.database = {
   // default options
   base: {
     host: "localhost",
+    name: "grimlock-dev",
+    // name: "grimlock-prod",
     port: 27017,
     serverOptions: {
       auto_reconnect: true
     },
     connectionOptions: {
     }
-  },
-
-  // dev overrides
-  development: {
-    name: "grimlock-dev",
-  },
-
-  // production overrides
-  production: {
-    name: "grimlock-prod",
   }
+};
+
+exports.server = {
+  hostname: 'localhost',
+  port: 8080
 };
