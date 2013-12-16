@@ -13,10 +13,10 @@ util.inherits(UserController, Controller);
 
 
 UserController.prototype.setRoutes = function() {
-  this.addRoute('post', '/user', this.postUser);
+  this.addRoute('post', '/user', this.postUser, true);
   this.addRoute('get', '/user/:name', this.getUserByName);
-  this.addRoute('put', '/user', this.putUser, this);
-  this.addRoute('del', '/user', this.deleteUser, this);
+  this.addRoute('put', '/user/:name', this.putUser, true);
+  this.addRoute('del', '/user/:name', this.deleteUser, true);
 };
 
 
@@ -25,7 +25,7 @@ UserController.prototype.postUser = function create(req, res, next) {
   var data = {
     email: ParamCleaner.clean(req.params.email),
     firstName: ParamCleaner.clean(req.params.firstname),
-    fullname: ParamCleaner.clean(req.params.fullname),
+    fullName: ParamCleaner.clean(req.params.fullname),
     lastName: ParamCleaner.clean(req.params.lastname),
     lid: ParamCleaner.clean(req.params.lid)
   };
@@ -55,14 +55,25 @@ UserController.prototype.getUserByName = function(req, res, next) {
 
 UserController.prototype.putUser = function(req, res, next) {
   // do some retrieval here
-  this.respondWith(res, { status: 200, content: [{ foo: 'bar' }] });
+  var query = {
+    fulName: ParamCleaner.clean(req.params.name)
+  };
+  var properties = this.flattenProperties_();
+  this.model.update(query, properties, function(results) {
+    this.respondWith(res, { status: 200, content: [results] });
+  });
   return next();
 };
 
 
 UserController.prototype.deleteUser = function(req, res, next) {
   // do some retrieval here
-  this.respondWith(res, { status: 200, content: [{ foo: 'bar' }] });
+  var params = {
+    fullName: ParamCleaner.clean(req.params.name)
+  };
+  this.model.del(params, function(numberOfRemovedResults) {
+    this.respondWith(res, { status: 200 , content: numberOfRemovedResults});
+  }.bind(this));
   return next();
 };
 
