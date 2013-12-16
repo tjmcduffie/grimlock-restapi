@@ -10,6 +10,7 @@ var server = restify.createServer({
 
 server.use(restify.CORS());
 server.use(restify.fullResponse());
+server.use(restify.bodyParser());
 
 bootstrap(server);
 
