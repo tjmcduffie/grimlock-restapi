@@ -32,7 +32,7 @@ UserModel.prototype.findOneById = function(id, callback) {
 UserModel.prototype.findOneByFullName = function(name, callback) {
   try {
     var props = {
-      fullname: name
+      fullName: name
     };
     this.findOneByProps(props, callback);
   } catch (e) {
@@ -53,18 +53,18 @@ UserModel.prototype.findOneByLinkedInId = function(lid, callback) {
 };
 
 
-UserModel.prototype.update = function(id, user, callback) {
+UserModel.prototype.update = function(query, properties, callback) {
   try {
-    util.base(this, 'update', id, user, callback);
+    util.base(this, 'update', query, properties, callback);
   } catch (e) {
     console.log(e);
   }
 };
 
 
-UserModel.prototype.del = function(userId, callback) {
+UserModel.prototype.del = function(params, callback) {
   try {
-    util.base(this, 'del', userId, callback);
+    util.base(this, 'del', params, callback);
   } catch (e) {
     console.log(e);
   }
@@ -83,11 +83,11 @@ UserModel.prototype.insert = function(user, callback) {
 
 UserModelData = function(data) {
   this._id = data._id;
-  this.firstName = data.firstname || '';
-  this.lastName = data.lastname || '';
-  this.fullname = data.lastname || '';
-  this.lid = data.lid;
-  this.email = data.email || '';
+  this.firstName = data.firstname || undefined;
+  this.lastName = data.lastname || undefined;
+  this.fullName = data.fullname || undefined;
+  this.lid = data.lid || undefined;
+  this.email = data.email || undefined;
 };
 
 module.exports = UserModel;
