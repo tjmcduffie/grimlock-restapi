@@ -1,88 +1,60 @@
-var util = require(process.cwd() + '/lib/util');
-var Controller = require(process.cwd() + '/lib/Controller');
-var Model = require(process.cwd() + '/models/User');
-var ParamCleaner = require(process.cwd() + '/lib/ParamCleaner');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
+var crud = require(process.cwd() + '/lib/CRUDHelper');
 
 
 
-var UserController = function() {
-  util.base(this);
-  this.model = new Model();
+module.exports = {
+  createUser: function(req, res, next) {
+    var user = new User(req.body);
+    delete user.id;
+    crud.create(user, res);
+  },
+
+  readOneUser: function(req, res, next) {
+    var id = decodeURIComponent(req.params.id);
+    crud.readOne(User, res, id, {
+      populate: 'profile'
+    });
+    // crud.readOne(Profile, res, id, {
+    //   populate: (decodeURIComponent(req.params.detail) === 'full') ?
+    //       'projects employments educations user' : undefined
+    // });
+    //
+  },
+
+  readManyUsers: function(req, res, next) {
+    var page = decodeURIComponent(req.params.page) || 1;
+    var isFull = decodeURIComponent(req.params.detail) === 'full';
+    var limit = 20;
+    var offset = (page - 1) * limit;
+
+    crud.readMany(User, res, {
+      limit: limit,
+      populate: isFull ? 'profile' : undefined,
+      skip: offset,
+      select: (isFull) ? {} : {
+        username: 1,
+        email: 1,
+        profile: 1
+      }
+    });
+  },
+
+  updateUser: function(req, res, next) {
+    var id = decodeURIComponent(req.params.id);
+    crud.update(User, res, id, {
+      receivedData: req.body,
+      $set: ['lid', 'name', 'email', 'username', 'hashed_password', 'salt',
+        'profile', 'slug', 'editDomain', 'name.first', 'name.last', 'name.formatted',
+        { key: 'updatedOn', value: req.body.updatedOn || Date.now()}
+      ],
+      $push: []
+    });
+  },
+
+  deleteUser: function(req, res, next) {
+    var id = decodeURIComponent(req.params.id);
+    crud.del(User, res, id);
+  }
 };
-util.inherits(UserController, Controller);
-
-
-UserController.prototype.setRoutes = function() {
-  this.addRoute('post', '/user', this.postUser, true);
-  this.addRoute('get', '/user/:reqFullName', this.getUserByName);
-  this.addRoute('put', '/user/:reqFullName', this.putUser, true);
-  this.addRoute('del', '/user/:reqFullName', this.deleteUser, true);
-};
-
-
-UserController.prototype.postUser = function create(req, res, next) {
-  // do some creation stuff here
-  var data = {
-    email: ParamCleaner.clean(req.params.email),
-    firstName: ParamCleaner.clean(req.params.firstName),
-    fullName: ParamCleaner.clean(req.params.fullName),
-    lastName: ParamCleaner.clean(req.params.lastName),
-    lid: ParamCleaner.clean(req.params.lid)
-  };
-  var user = [];
-  this.model.insert(data, function(result) {
-    if (result) {
-      user.push(result);
-    }
-    this.respondWith(res, { status: 201, content: user });
-  }.bind(this));
-  return next();
-};
-
-
-UserController.prototype.getUserByName = function(req, res, next) {
-  var reqFullName = ParamCleaner.clean(req.params.reqFullName);
-  var users = [];
-  this.model.findOneByFullName(reqFullName, function (result) {
-    if (result) {
-      users.push(result);
-    }
-    this.respondWith(res, { status: 200, content: users });
-  }.bind(this));
-  return next();
-};
-
-
-UserController.prototype.putUser = function(req, res, next) {
-  // do some retrieval here
-  var propKeys = ['firstName', 'lastName', 'fullName', 'email', 'lid'];
-  var propsToSet = {};
-  var query = {
-    fullName: ParamCleaner.clean(req.params.reqFullName)
-  };
-
-  propKeys.forEach(function(elem) {
-    if (req.params[elem]) {
-      propsToSet[elem] = ParamCleaner.clean(req.params[elem]);
-    }
-  });
-
-  this.model.update(query, { $set: util.flattenObject(propsToSet) }, function(results) {
-    this.respondWith(res, { status: 200, content: [results] });
-  }.bind(this));
-  return next();
-};
-
-
-UserController.prototype.deleteUser = function(req, res, next) {
-  // do some retrieval here
-  var params = {
-    fullName: ParamCleaner.clean(req.params.reqFullName)
-  };
-  this.model.del(params, function(numberOfRemovedResults) {
-    this.respondWith(res, { status: 200 , content: numberOfRemovedResults});
-  }.bind(this));
-  return next();
-};
-
-module.exports = UserController;

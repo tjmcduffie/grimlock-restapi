@@ -1,93 +1,97 @@
-var util = require(process.cwd() + '/lib/util');
-var Model = require(process.cwd() + '/lib/Model');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var Profile = mongoose.model('Profile');
+var urlify = require('urlify').create({
+  spaces: '-',
+  toLower: true,
+  nonPrintable: '-',
+  trim: true
+});
 
 
+/**
+ * User model Schema
+ * @type {Schema}
+ */
+var UserSchema = new Schema({
+  lid: {type: String, unique: true, required: true},
+  name: {
+    first: {type: String, required: true},
+    last: {type: String, required: true},
+    formatted: String
+  },
+  email: {type: String, unique: true, default: '', required: true},
+  username: {type: String, default: '', required: true},
+  hashed_password: {type: String, default: ''},
+  salt: {type: String, default: ''},
+  profile: {type: Schema.Types.ObjectId, ref: 'Profile'},
+  slug: {type: String, unique: true, trim: true, index: true},
+  editDomain: {type: String, index: true},
+  createdOn: {type: Date, default: Date.now},
+  updatedOn: {type: Date, default: Date.now}
+});
 
-var UserModel = function() {
-  this.collectionName = 'users';
 
-  util.base(this);
-};
-util.inherits(UserModel, Model);
+UserSchema.set('toObject', { getters: true });
+UserSchema.set('toJSON', { getters: true });
 
 
-UserModel.prototype.findAll = function(callback) {
-  try {
-    util.base(this, 'findAll', callback);
-  } catch (e) {
-    console.log(e);
+// Schema Hooks
+UserSchema.pre('save', function (next) {
+  // Store the urlify'ed name as the url
+  if (!this.slug) {
+    var slug = this.name.formatted || (this.name.first + ' ' + this.name.last).trim();
+    if (!!slug) {
+      this.slug = urlify(slug);
+    }
+  }
+  next();
+});
+
+UserSchema.pre('save', function (next) {
+  if (!this.profile) {
+    var profile =  new Profile({
+      user: this._id,
+      'contact.email': this.email
+    });
+    this.profile = profile._id;
+
+    profile.save();
+  }
+  next();
+});
+
+UserSchema.post('remove', function (data) {
+  if (data.profile) {
+    Profile.findOneAndRemove({_id: data.profile}, function(err, profile) {
+      profile.remove();
+      if (err) {
+        console.log('Unable to remove profile %s while removing user %s', data.profile, data._id);
+      } else {
+        console.log('%s has been removed', data.profile);
+      }
+    });
+  }
+});
+
+
+// Schema Validations
+UserSchema.path('lid').validate(function (prop) {
+  return typeof prop !== 'undefined' && prop.length > 0;
+}, 'A LinkedIn id is required');
+
+
+UserSchema.methods = {};
+
+UserSchema.statics = {
+  findOneBySlug : function(slug, callback) {
+    this.findOne({'slug': slug})
+      .exec(callback);
+  },
+  findOneById : function(id, callback) {
+    this.findOne({'_id': id})
+      .exec(callback);
   }
 };
 
-
-UserModel.prototype.findOneById = function(id, callback) {
-  try {
-    util.base(this, 'findOneById', id, callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-
-UserModel.prototype.findOneByFullName = function(name, callback) {
-  try {
-    var props = {
-      fullName: name
-    };
-    this.findOneByProps(props, callback);
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-
-UserModel.prototype.findOneByLinkedInId = function(lid, callback) {
-  try {
-    var props = {
-      lid: lid
-    };
-    this.findOneByProps(props, callback);
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-
-UserModel.prototype.update = function(query, properties, callback) {
-  try {
-    util.base(this, 'update', query, properties, callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-
-UserModel.prototype.del = function(params, callback) {
-  try {
-    util.base(this, 'del', params, callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-
-UserModel.prototype.insert = function(user, callback) {
-  try {
-    util.base(this, 'insert', user, callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-
-
-UserModelData = function(data) {
-  this._id = data._id;
-  this.firstName = data.firstname || undefined;
-  this.lastName = data.lastname || undefined;
-  this.fullName = data.fullname || undefined;
-  this.lid = data.lid || undefined;
-  this.email = data.email || undefined;
-};
-
-module.exports = UserModel;
+mongoose.model('User', UserSchema);
