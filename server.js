@@ -1,19 +1,54 @@
+/** REQUIREMENTS */
+var express = require('express');
+var fs = require('fs');
+var mongoose = require('mongoose');
 
-var restify = require('restify');
-var bootstrap = require(process.cwd() + '/lib/Bootstrap');
-var config = require(process.cwd() + '/config');
+// environment & config
+var env = process.env.NODE_ENV || 'dev';
+var config = require(process.cwd() + '/config/app')[env];
 
 
-var server = restify.createServer({
-  "name": "Grimlock REST API Server"
+/** MONGO */
+// connect to mongodb
+var connect = function () {
+  var options = {
+    server: {
+      socketOptions: { keepAlive: 1 }
+    }
+  };
+  mongoose.connect(config.db, options);
+};
+connect();
+
+// Error handler
+mongoose.connection.on('error', function (err) {
+  console.log('Mongo Error: ' + err);
 });
 
-server.use(restify.CORS());
-server.use(restify.fullResponse());
-server.use(restify.bodyParser());
+// Reconnect when closed
+mongoose.connection.on('disconnected', function () {
+  connect();
+});
 
-bootstrap(server);
 
-server.listen(config.server.port, function() {
-  console.log('listening to port 8080', server.name, server.url);
+/** Express */
+// create server
+var server = express();
+
+// configure server
+server.use(require('body-parser')());
+server.use(require('compression')());
+
+// load models
+var models_path = __dirname + '/models';
+fs.readdirSync(models_path).forEach(function (file) {
+  if (~file.indexOf('.js')) require(models_path + '/' + file);
+});
+
+// apply routes
+require(process.cwd() + '/config/routes')(server);
+
+// listen to the supplied port
+server.listen(config.ports.server, function() {
+  console.log('listening to port ' + config.ports.server, config.name);
 });

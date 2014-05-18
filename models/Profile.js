@@ -1,67 +1,65 @@
-var util = require(process.cwd() + '/lib/util');
-var Model = require(process.cwd() + '/lib/Model');
+// var UserSchema = require(process.cwd() + '/db/schema/User');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var urlify = require('urlify').create({
+  spaces: '-',
+  toLower: true,
+  nonPrintable: '-',
+  trim: true
+});
+
+
+/**
+ * User model Schema
+ * @type {Schema}
+ */
+var ProfileSchema = new Schema({
+  user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+  contact: {
+    emails: [String],
+    websites: [String],
+    social: [{
+      url: String,
+      name: String
+    }]
+  },
+  title: String,
+  interests: String,
+  picture: String,
+  projects: [{type: Schema.Types.ObjectId, ref: 'Project'}],
+  employments: [{type: Schema.Types.ObjectId, ref: 'Employment'}],
+  educations: [{type: Schema.Types.ObjectId, ref: 'Education'}],
+  skills: [String],
+  createdOn: {type: Date, default: Date.now},
+  updatedOn: {type: Date, default: Date.now}
+});
+
+
+ProfileSchema.set('toObject', { getters: true });
+ProfileSchema.set('toJSON', { getters: true });
+
+
+// Schema Hooks
+// ProfileSchema.pre('save', function (next) {
+//   console.log(this);
+//   console.log(arguments[0]);
+//   console.log(arguments[1]);
+//   next();
+// });
+ProfileSchema.post('remove', function (data) {
+  console.log('Profile %s removed', data._id);
+});
 
 
 
-var ProfileModel = function() {
-  this.collectionName = 'projects';
-
-  util.base(this);
-};
-util.inherits(ProfileModel, Model);
+// Schema Validations
+// ProfileSchema.path('name.first').validate(function (prop) {
+//   return typeof prop !== 'undefined' && prop.length > 0;
+// }, 'First name cannot be blank');
 
 
-ProfileModel.prototype.getProfileCollection = function(success) {
-  try {
-    this.getCollection(callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
+ProfileSchema.methods = {};
 
+ProfileSchema.statics = {};
 
-ProfileModel.prototype.fetch = function(callback) {
-  try {
-    util.base(this, 'findAll', callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-
-ProfileModel.prototype.findOneById = function(id, callback) {
-  try {
-    util.base(this, 'findOneById', id, callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-
-ProfileModel.prototype.update = function(id, project, callback) {
-  try {
-    util.base(this, 'update', id, project, callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-
-ProfileModel.prototype.del = function(projectId, callback) {
-  try {
-    util.base(this, 'del', projectId, callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-
-ProfileModel.prototype.insert = function(projects, callback) {
-  try {
-    util.base(this, 'insert', projects, callback);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-module.exports = ProfileModel;
+mongoose.model('Profile', ProfileSchema);
