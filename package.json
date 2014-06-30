@@ -19,5 +19,9 @@
     "compression": "^1.0.1",
     "body-parser": "^1.0.2"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "jasmine-node": "^1.14.3",
+    "istanbul": "^0.2.10"
+  }
 }
