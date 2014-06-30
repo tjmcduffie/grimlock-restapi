@@ -21,3 +21,6 @@ node_modules
 db/grimlock/_tmp
 db/grimlock/journal
 db/grimlock/local.*
+db/grimlock/grimlock-dev*
+
+coverage
