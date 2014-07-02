@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ProfileModel = require(process.cwd() + '/models/Profile.js');
 var Profile = mongoose.model('Profile');
 var urlify = require('urlify').create({
   spaces: '-',
@@ -20,15 +21,15 @@ var UserSchema = new Schema({
     last: {type: String, required: true},
     formatted: String
   },
-  email: {type: String, unique: true, default: '', required: true},
-  username: {type: String, default: '', required: true},
-  hashed_password: {type: String, default: ''},
-  salt: {type: String, default: ''},
+  email: {type: String, unique: true, 'default': '', required: true},
+  username: {type: String, 'default': '', required: true},
+  hashed_password: {type: String, 'default': ''},
+  salt: {type: String, 'default': ''},
   profile: {type: Schema.Types.ObjectId, ref: 'Profile'},
   slug: {type: String, unique: true, trim: true, index: true},
   editDomain: {type: String, index: true},
-  createdOn: {type: Date, default: Date.now},
-  updatedOn: {type: Date, default: Date.now}
+  createdOn: {type: Date, 'default': Date.now},
+  updatedOn: {type: Date, 'default': Date.now}
 });
 
 

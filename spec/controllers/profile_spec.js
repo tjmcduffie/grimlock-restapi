@@ -6,14 +6,14 @@ var ProfileController = require(process.cwd() + '/controllers/Profile');
 describe('The Profile Controller', function() {
   var req, res;
   var fakeProfile = {
-    "interests": "stuff",
-    "picture": "https://pbs.twimg.com/profile_images/1268597598/sxsw-profile2.jpg",
-    "title": "Awesome overlord supreme",
-    "user": "5377dacb984187ac6bdf3c4f",
-    "contact": {
-      "emails": [
-        "timothy.mcduffie@gmail.com",
-        "timmcduffie@icloud.com"
+    'interests': 'stuff',
+    'picture': 'https://pbs.twimg.com/profile_images/1268597598/sxsw-profile2.jpg',
+    'title': 'Awesome overlord supreme',
+    'user': '5377dacb984187ac6bdf3c4f',
+    'contact': {
+      'emails': [
+        'timothy.mcduffie@gmail.com',
+        'timmcduffie@icloud.com'
       ]
     }
   };

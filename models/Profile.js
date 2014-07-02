@@ -30,8 +30,8 @@ var ProfileSchema = new Schema({
   employments: [{type: Schema.Types.ObjectId, ref: 'Employment'}],
   educations: [{type: Schema.Types.ObjectId, ref: 'Education'}],
   skills: [String],
-  createdOn: {type: Date, default: Date.now},
-  updatedOn: {type: Date, default: Date.now}
+  createdOn: {type: Date, 'default': Date.now},
+  updatedOn: {type: Date, 'default': Date.now}
 });
 
 

@@ -3,7 +3,7 @@ var Response = require(process.cwd() + '/lib/response');
 
 describe('The Response normalizer', function() {
   var resWithoutErrorWithoutData, resWithErrorWithoutData, resWithErrorWithData, resWithoutErrorWithData;
-  var err = "Test Error";
+  var err = 'Test Error';
   var data = {
     'foo': 'bar',
     'baz': 'bang'
