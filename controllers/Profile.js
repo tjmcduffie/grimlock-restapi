@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var ProfileModel = require(process.cwd() + '/models/Profile.js');
 var Profile = mongoose.model('Profile');
 var crud = require(process.cwd() + '/lib/CRUDHelper');
 

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var UserModel = require(process.cwd() + '/models/User.js');
 var User = mongoose.model('User');
 var crud = require(process.cwd() + '/lib/CRUDHelper');
 

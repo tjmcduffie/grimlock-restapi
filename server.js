@@ -1,6 +1,5 @@
 /** REQUIREMENTS */
 var express = require('express');
-var fs = require('fs');
 var mongoose = require('mongoose');
 
 // environment & config
@@ -38,12 +37,6 @@ var server = express();
 // configure server
 server.use(require('body-parser')());
 server.use(require('compression')());
-
-// load models
-var models_path = __dirname + '/models';
-fs.readdirSync(models_path).forEach(function (file) {
-  if (~file.indexOf('.js')) require(models_path + '/' + file);
-});
 
 // apply routes
 require(process.cwd() + '/config/routes')(server);
