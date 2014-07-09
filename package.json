@@ -22,7 +22,6 @@
   },
   "private": true,
   "devDependencies": {
-    "jasmine-node": "^1.14.3",
     "istanbul": "^0.2.10",
     "grunt-open": "^0.2.3",
     "grunt-shell": "^0.7.0",
@@ -32,7 +31,8 @@
     "grunt-jasmine-node": "^0.2.1",
     "grunt-jsvalidate": "^0.2.2",
     "grunt-plato": "^1.0.0",
-    "grunt-complexity": "^0.2.0"
+    "grunt-complexity": "^0.2.0",
+    "jasmine-node": "^1.14.2"
   },
   "scripts": {
     "start": "NODE_ENV=dev grunt start",
