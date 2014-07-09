@@ -91,21 +91,14 @@ module.exports = function(grunt) {
     jshint: {
       options: '<%= config.jshintrc %>',
       gruntfile: {
-        options: {
-          force: true
-        },
         src: '<%= config.files.gruntfile %>'
       },
       app: {
-        options: {
-          force: true
-        },
         src: ['<%= config.files.appentry %>', '<%= config.files.app %>']
       },
       spec: {
         options: {
           globals: {
-            force: true,
             afterEach: true,
             beforeEach: true,
             describe: true,
@@ -264,3 +257,5 @@ module.exports = function(grunt) {
   grunt.registerTask('quality', ['jshint', 'jsvalidate', 'complexity', 'plato', 'coverage']);
 
 };
+
+return 43;
