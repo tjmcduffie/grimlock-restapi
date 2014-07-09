@@ -1,18 +1,17 @@
-var mongoose = require('mongoose');
-var UserModel = require(process.cwd() + '/models/User.js');
-var User = mongoose.model('User');
+require(process.cwd() + '/models/User.js');
+var User = require('mongoose').model('User');
 var crud = require(process.cwd() + '/lib/CRUDHelper');
 
 
 
 module.exports = {
-  createUser: function(req, res, next) {
+  createUser: function(req, res) {
     var user = new User(req.body);
     delete user.id;
     crud.create(user, res);
   },
 
-  readOneUser: function(req, res, next) {
+  readOneUser: function(req, res) {
     var id = decodeURIComponent(req.params.id);
     crud.readOne(User, res, id, {
       populate: 'profile'
@@ -24,7 +23,7 @@ module.exports = {
     //
   },
 
-  readManyUsers: function(req, res, next) {
+  readManyUsers: function(req, res) {
     var page = decodeURIComponent(req.params.page) || 1;
     var isFull = decodeURIComponent(req.params.detail) === 'full';
     var limit = 20;
@@ -42,7 +41,7 @@ module.exports = {
     });
   },
 
-  updateUser: function(req, res, next) {
+  updateUser: function(req, res) {
     var id = decodeURIComponent(req.params.id);
     crud.update(User, res, id, {
       receivedData: req.body,
@@ -54,7 +53,7 @@ module.exports = {
     });
   },
 
-  deleteUser: function(req, res, next) {
+  deleteUser: function(req, res) {
     var id = decodeURIComponent(req.params.id);
     crud.del(User, res, id);
   }

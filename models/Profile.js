@@ -1,13 +1,13 @@
 // var UserSchema = require(process.cwd() + '/db/schema/User');
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var urlify = require('urlify').create({
-  spaces: '-',
-  toLower: true,
-  nonPrintable: '-',
-  trim: true
-});
+// var urlify = require('urlify').create({
+//   spaces: '-',
+//   toLower: true,
+//   nonPrintable: '-',
+//   trim: true
+// });
 
+var Schema = mongoose.Schema;
 
 /**
  * User model Schema

@@ -1,17 +1,16 @@
-var mongoose = require('mongoose');
-var ProfileModel = require(process.cwd() + '/models/Profile.js');
-var Profile = mongoose.model('Profile');
+require(process.cwd() + '/models/Profile.js');
+var Profile = require('mongoose').model('Profile');
 var crud = require(process.cwd() + '/lib/CRUDHelper');
 
 
 
 module.exports = {
-  createProfile: function(req, res, next) {
+  createProfile: function(req, res) {
     req.body.user = req.body.user || req.userid;
     var profile = new Profile(req.body);
     crud.create(profile, res);
   },
-  readOneProfile: function(req, res, next) {
+  readOneProfile: function(req, res) {
     var id = decodeURIComponent(req.params.id);
 
     crud.readOne(Profile, res, id, {
@@ -19,18 +18,16 @@ module.exports = {
           'projects employments educations user' : undefined
     });
   },
-  readManyProfiles: function(req, res, next) {
+  readManyProfiles: function(req, res) {
     var page = decodeURIComponent(req.params.page) || 1;
     var isFull = decodeURIComponent(req.params.detail) === 'full';
     var limit = 20;
-    var offset = (page - 1) * limit;
 
-    console.log('sending to CRUD');
     crud.readMany(Profile, res, {
       limit: limit,
-      skip: offset,
-      populate: (isFull) ? 'projects employments educations user' : undefined,
-      select: (isFull) ? {} : {
+      skip: (page - 1) * limit,
+      populate: isFull ? 'projects employments educations user' : undefined,
+      select: isFull ? {} : {
         title: 1,
         picture: 1,
         employments: 1,
@@ -47,7 +44,7 @@ module.exports = {
       }
     });
   },
-  updateProfile: function(req, res, next) {
+  updateProfile: function(req, res) {
     var id = decodeURIComponent(req.params.id);
     crud.update(Profile, res, id, {
       receivedData: req.body,
@@ -59,7 +56,7 @@ module.exports = {
     });
 
   },
-  deleteProfile: function(req, res, next) {
+  deleteProfile: function(req, res) {
     var id = decodeURIComponent(req.params.id);
     crud.del(Profile, res, id);
   }
