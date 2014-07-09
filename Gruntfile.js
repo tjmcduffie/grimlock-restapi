@@ -5,6 +5,10 @@ module.exports = function(grunt) {
   var env = process.env.NODE_ENV || 'dev';
   var appconfig = require(process.cwd() + '/config/app')[env];
   var jshintrc = JSON.parse(require('fs').readFileSync('./.jshintrc', 'utf8'));
+  // delete unsupported options from jshint version in Plato
+  // @TODO: submit a pull request to update the included version of Plato
+  delete jshintrc.freeze;
+  delete jshintrc.nonbsp;
 
 
   /*** Project configuration. */
