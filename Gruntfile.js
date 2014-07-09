@@ -4,6 +4,7 @@ module.exports = function(grunt) {
   /*** set up vars. */
   var env = process.env.NODE_ENV || 'dev';
   var appconfig = require(process.cwd() + '/config/app')[env];
+  var jshintrc = JSON.parse(require('fs').readFileSync('./.jshintrc', 'utf8'));
 
 
   /*** Project configuration. */
@@ -15,9 +16,11 @@ module.exports = function(grunt) {
         gruntfile: 'Gruntfile.js',
         appentry: 'server.js',
         app: '{controllers,lib,models}/{,**/}*.js',
-        tests: 'spec/{,**/}*.js'
+        tests: 'spec/{,**/}*.js',
+        reportsdir: 'reports'
       },
-      node: appconfig
+      node: appconfig,
+      jshintrc: jshintrc
     },
 
     /*** Open task. */
@@ -60,7 +63,7 @@ module.exports = function(grunt) {
         options: {
           stdout: true
         },
-        command: './node_modules/istanbul/lib/cli.js cover --dir reports/coverage ' +
+        command: './node_modules/istanbul/lib/cli.js cover --dir <%= config.files.reportsdir %>/coverage ' +
             './node_modules/jasmine-node/bin/jasmine-node -- spec/'
       },
       checkcoverage: {
@@ -82,29 +85,7 @@ module.exports = function(grunt) {
 
     /*** JS Syntax checking. */
     jshint: {
-      options: {
-        bitwise: true,
-        curly: true,
-        eqeqeq: true,
-        es3: true,
-        forin: true,
-        freeze: true,
-        immed: true,
-        latedef: 'nofunc',
-        newcap: true,
-        noarg: true,
-        node: true,
-        noempty: true,
-        nonbsp: true,
-        quotmark: 'single',
-        undef: true,
-        trailing: true,
-        maxparams: 4,
-        maxcomplexity: 10,
-        maxlen: 110,
-        unused: 'strict',
-        validthis: true
-      },
+      options: '<%= config.jshintrc %>',
       gruntfile: {
         options: {
           force: true
@@ -175,8 +156,8 @@ module.exports = function(grunt) {
     complexity: {
       options: {
         breakOnErrors: true,
-        jsLintXML: 'reports/complexity/report.xml',         // create XML JSLint-like report
-        checkstyleXML: 'reports/complexity/checkstyle.xml', // create checkstyle report
+        jsLintXML: '<%= config.files.reportsdir %>/complexity/report.xml',         // create XML JSLint-like report
+        checkstyleXML: '<%= config.files.reportsdir %>/complexity/checkstyle.xml', // create checkstyle report
         errorsOnly: false,               // show only maintainability errors
         cyclomatic: 10,          // 10 - 15 is a good range
         halstead: 50,            // 50 - 60 is a good range
@@ -215,8 +196,8 @@ module.exports = function(grunt) {
       },
       app: {
         files: {
-          // 'reports/plato': ['<%= config.files.appentry %>', '<%= config.files.app %>']
-          'reports/plato': ['<%= complexity.app.src %>']
+          // '<%= config.files.reportsdir %>/plato': ['<%= config.files.appentry %>', '<%= config.files.app %>']
+          '<%= config.files.reportsdir %>/plato': ['<%= complexity.app.src %>']
         }
       }
     },
