@@ -23,4 +23,4 @@ db/grimlock/journal
 db/grimlock/local.*
 db/grimlock/grimlock-dev*
 
-coverage
+reports
