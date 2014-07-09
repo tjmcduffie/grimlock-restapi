@@ -1,4 +1,4 @@
-var Response = require(process.cwd() + '/lib/response');
+var Response = require(process.cwd() + '/lib/Response');
 
 
 describe('The Response normalizer', function() {
