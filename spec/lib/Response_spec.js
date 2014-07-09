@@ -75,4 +75,7 @@ describe('The Response normalizer', function() {
       expect(resWithErrorWithData.getData().error).toBeDefined();
     });
   });
+  it('has a bogus test that should fail', function() {
+    expect(false).toBe(true);
+  });
 });
