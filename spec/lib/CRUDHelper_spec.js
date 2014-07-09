@@ -6,7 +6,7 @@ var crud  = require(process.cwd() + '/lib/CRUDHelper');
 
 
 describe('The CRUDHelper', function() {
-  var obj, res, id, options, mongoResult, UserModel, fakeId;
+  var obj, res, mongoResult, UserModel, fakeId;
   var fakeUser = {
     'id': '5377dacb984187ac6bdf3c4f',
     'editDomain': 'test.timmcduffie.com',
@@ -22,7 +22,6 @@ describe('The CRUDHelper', function() {
     }
   };
   var isError = false;
-  var next = function() {};
 
   beforeEach(function() {
     obj = new User(fakeUser);
