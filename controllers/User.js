@@ -1,4 +1,4 @@
-require(process.cwd() + '/models/User.js');
+require(process.cwd() + '/models/User');
 var User = require('mongoose').model('User');
 var crud = require(process.cwd() + '/lib/CRUDHelper');
 
