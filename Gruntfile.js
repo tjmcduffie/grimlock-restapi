@@ -153,8 +153,8 @@ module.exports = function(grunt) {
     complexity: {
       options: {
         breakOnErrors: true,
-        jsLintXML: '<%= config.files.reportsdir %>/complexity/report.xml',         // create XML JSLint-like report
-        checkstyleXML: '<%= config.files.reportsdir %>/complexity/checkstyle.xml', // create checkstyle report
+        jsLintXML: '<%= config.files.reportsdir %>/complexity/report.xml',
+        checkstyleXML: '<%= config.files.reportsdir %>/complexity/checkstyle.xml',
         errorsOnly: false,               // show only maintainability errors
         cyclomatic: 10,          // 10 - 15 is a good range
         halstead: 50,            // 50 - 60 is a good range
@@ -167,7 +167,6 @@ module.exports = function(grunt) {
         src: [
           '<%= config.files.appentry %>',
           '<%= config.files.app %>'
-          // 'lib/*.js'
         ]
       }
     },
@@ -193,7 +192,6 @@ module.exports = function(grunt) {
       },
       app: {
         files: {
-          // '<%= config.files.reportsdir %>/plato': ['<%= config.files.appentry %>', '<%= config.files.app %>']
           '<%= config.files.reportsdir %>/plato': ['<%= complexity.app.src %>']
         }
       }
@@ -244,17 +242,18 @@ module.exports = function(grunt) {
   // stop related services.
   grunt.registerTask('stop', ['shell:mongostop']);
 
-  // Test scripts.
-  grunt.registerTask('test', ['jshint', 'jsvalidate', 'jasmine_node', 'shell:checkcoverage', 'complexity', ]);
-
-  // Test scripts.
-  grunt.registerTask('coverage', ['shell:test', 'shell:cover', 'shell:checkcoverage']);
-
   // start the application and open postman.
   grunt.registerTask('serve', ['test', 'start']);
 
+  // Test scripts.
+  grunt.registerTask('test', ['jshint', 'jsvalidate', 'jasmine_node', 'shell:checkcoverage',
+      'complexity' ]);
+
+  // Coverage checking scripts.
+  grunt.registerTask('coverage', ['shell:test', 'shell:cover', 'shell:checkcoverage']);
+
   // check the overall app quality.
-  grunt.registerTask('quality', ['jshint', 'jsvalidate', 'complexity', 'plato', 'coverage']);
+  grunt.registerTask('report', ['plato', 'shell:cover', 'complexity']);
 
 };
 
