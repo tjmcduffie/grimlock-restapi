@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - "0.10"
 after_success:
-  - ./node_modules/.bin/grunt quality
+  - ./node_modules/.bin/grunt report
