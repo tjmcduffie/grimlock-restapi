@@ -36,8 +36,9 @@
     "jasmine-node": "https://github.com/tjmcduffie/jasmine-node/archive/master.tar.gz"
   },
   "scripts": {
-    "start": "NODE_ENV=dev grunt start",
-    "test": "NODE_ENV=test ./node_modules/.bin/jasmine-node spec/ --color --verbose",
+    "start": "NODE_ENV=dev ./node_modules/.bin/grunt start",
+    "test": "NODE_ENV=test ./node_modules/.bin/grunt test",
+    "rawtest": "NODE_ENV=test ./node_modules/.bin/jasmine-node spec/ --color --verbose",
     "cover": "./node_modules/istanbul/lib/cli.js cover ./node_modules/jasmine-node/bin/jasmine-node -- spec/",
     "covertest": "./node_modules/istanbul/lib/cli.js test ./node_modules/jasmine-node/bin/jasmine-node -- spec/ --color --verbose"
   }

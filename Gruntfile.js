@@ -245,7 +245,7 @@ module.exports = function(grunt) {
   grunt.registerTask('stop', ['shell:mongostop']);
 
   // Test scripts.
-  grunt.registerTask('test', ['jasmine_node']);
+  grunt.registerTask('test', ['jshint', 'jsvalidate', 'jasmine_node', 'shell:checkcoverage', 'complexity', ]);
 
   // Test scripts.
   grunt.registerTask('coverage', ['shell:test', 'shell:cover', 'shell:checkcoverage']);
