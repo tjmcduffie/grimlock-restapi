@@ -1,7 +1,7 @@
-var crud  = require(process.cwd() + '/lib/CRUDHelper');
-var UserController = require(process.cwd() + '/controllers/User');
-require(process.cwd() + '/models/Profile');
-require(process.cwd() + '/models/User');
+var crud  = require('../../app/lib/CRUDHelper');
+var UserController = require('../../app/controllers/User');
+require('../../app/models/Profile');
+require('../../app/models/User');
 
 
 describe('The User Controller', function() {

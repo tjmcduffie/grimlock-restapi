@@ -1,10 +1,10 @@
 // controllers
 
-var user = require(process.cwd() + '/controllers/User');
-var profile = require(process.cwd() + '/controllers/Profile');
-// var education = require(process.cwd() + '/controllers/Education');
-// var employment = require(process.cwd() + '/controllers/Employment');
-// var project = require(process.cwd() + '/controllers/Project');
+var user = require('../controllers/User');
+var profile = require('../controllers/Profile');
+// var education = require('../controllers/Education');
+// var employment = require('../controllers/Employment');
+// var project = require('../controllers/Project');
 
 module.exports = function(app) {
 

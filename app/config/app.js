@@ -1,7 +1,7 @@
 
 // Database connection string details
 
-exports.dev = {
+module.exports.dev = {
   name: 'Grimlock REST API Server - DEV',
   db: 'mongodb://localhost/grimlock-dev',
   ports: {

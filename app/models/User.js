@@ -7,7 +7,7 @@ var urlify = require('urlify').create({
 });
 
 var Schema = mongoose.Schema;
-require(process.cwd() + '/models/Profile.js');
+require('../models/Profile.js');
 var Profile = mongoose.model('Profile');
 
 

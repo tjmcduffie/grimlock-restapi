@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 
   /*** set up vars. */
   var env = process.env.NODE_ENV || 'dev';
-  var appconfig = require(process.cwd() + '/config/app')[env];
+  var appconfig = require(process.cwd() + '/app/config/app')[env];
   var jshintrc = JSON.parse(require('fs').readFileSync('./.jshintrc', 'utf8'));
   // delete unsupported options from jshint version in Plato
   // @TODO: submit a pull request to update the included version of Plato
@@ -18,8 +18,7 @@ module.exports = function(grunt) {
     config: {
       files: {
         gruntfile: 'Gruntfile.js',
-        appentry: 'server.js',
-        app: '{controllers,lib,models}/{,**/}*.js',
+        app: 'app/{,**/}*.js',
         tests: 'spec/{,**/}*.js',
         reportsdir: 'reports'
       },
@@ -54,7 +53,7 @@ module.exports = function(grunt) {
         options: {
           stdout: true
         },
-        command: './node_modules/.bin/nodemon ./server.js'
+        command: './node_modules/.bin/nodemon ./app/server.js'
       },
       test: {
         options: {
@@ -94,7 +93,7 @@ module.exports = function(grunt) {
         src: '<%= config.files.gruntfile %>'
       },
       app: {
-        src: ['<%= config.files.appentry %>', '<%= config.files.app %>']
+        src: ['<%= config.files.app %>']
       },
       spec: {
         options: {
@@ -127,7 +126,7 @@ module.exports = function(grunt) {
       },
       app:{
         files:{
-          src:['<%= config.files.appentry %>', '<%= config.files.app %>']
+          src:['<%= config.files.app %>']
         }
       },
       spec: {
@@ -164,10 +163,7 @@ module.exports = function(grunt) {
         n: true
       },
       app: {
-        src: [
-          '<%= config.files.appentry %>',
-          '<%= config.files.app %>'
-        ]
+        src: ['<%= config.files.app %>']
       }
     },
 
@@ -202,7 +198,6 @@ module.exports = function(grunt) {
       hint: {
         files: [
           '<%= config.files.gruntfile %>',
-          '<%= config.files.appentry %>',
           '<%= config.files.app %>',
           '<%= config.files.tests %>'
         ],
@@ -210,7 +205,6 @@ module.exports = function(grunt) {
       },
       test: {
         files: [
-          '<%= config.files.appentry %>',
           '<%= config.files.app %>',
           '<%= config.files.tests %>'
         ],

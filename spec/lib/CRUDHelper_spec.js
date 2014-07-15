@@ -1,8 +1,8 @@
-require(process.cwd() + '/models/Profile');
-require(process.cwd() + '/models/User');
+require('../../app/models/Profile');
+require('../../app/models/User');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var crud  = require(process.cwd() + '/lib/CRUDHelper');
+var crud  = require('../../app/lib/CRUDHelper');
 
 
 describe('The CRUDHelper', function() {

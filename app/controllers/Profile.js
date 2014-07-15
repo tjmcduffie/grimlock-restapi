@@ -1,6 +1,6 @@
-require(process.cwd() + '/models/Profile');
+require('../models/Profile');
 var Profile = require('mongoose').model('Profile');
-var crud = require(process.cwd() + '/lib/CRUDHelper');
+var crud = require('../lib/CRUDHelper');
 
 
 

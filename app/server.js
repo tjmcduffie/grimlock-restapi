@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 // environment & config
 var env = process.env.NODE_ENV || 'dev';
-var config = require(process.cwd() + '/config/app')[env];
+var config = require('./config/app')[env];
 
 
 /** MONGO */
@@ -39,7 +39,7 @@ server.use(require('body-parser')());
 server.use(require('compression')());
 
 // apply routes
-require(process.cwd() + '/config/routes')(server);
+require('./config/routes')(server);
 
 // listen to the supplied port
 server.listen(config.ports.server, function() {

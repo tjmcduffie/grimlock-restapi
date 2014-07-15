@@ -1,6 +1,6 @@
-var crud  = require(process.cwd() + '/lib/CRUDHelper');
-var ProfileController = require(process.cwd() + '/controllers/Profile');
-require(process.cwd() + '/models/Profile');
+var crud  = require('../../app/lib/CRUDHelper');
+var ProfileController = require('../../app/controllers/Profile');
+require('../../app/models/Profile');
 
 
 describe('The Profile Controller', function() {

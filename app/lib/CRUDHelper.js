@@ -1,4 +1,4 @@
-var Response = require(process.cwd() + '/lib/Response');
+var Response = require('../lib/Response');
 
 module.exports = {
   create: function(obj, res) {
