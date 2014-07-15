@@ -193,6 +193,14 @@ module.exports = function(grunt) {
       }
     },
 
+    /*** Clean directories. */
+    clean: {
+      reports: ['<%= config.files.reportsdir %>'],
+      coverage: ['<%= config.files.reportsdir %>/coverage'],
+      complexity: ['<%= config.files.reportsdir %>/complexity'],
+      plato: ['<%= config.files.reportsdir %>/plato']
+    },
+
     /*** handle changes in files. */
     watch: {
       hint: {
@@ -217,6 +225,7 @@ module.exports = function(grunt) {
 
   /*** Load the plugins. */
   grunt.loadNpmTasks('grunt-complexity');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-jasmine-node');
@@ -240,13 +249,13 @@ module.exports = function(grunt) {
   grunt.registerTask('serve', ['test', 'start']);
 
   // Test scripts.
-  grunt.registerTask('test', ['jshint', 'jsvalidate', 'jasmine_node', 'shell:checkcoverage',
-      'complexity' ]);
+  grunt.registerTask('test', ['clea:coverage', 'clea:complexity', 'jshint', 'jsvalidate', 'jasmine_node',
+      'shell:checkcoverage', 'complexity' ]);
 
   // Coverage checking scripts.
-  grunt.registerTask('coverage', ['shell:test', 'shell:cover', 'shell:checkcoverage']);
+  grunt.registerTask('coverage', ['clea:coverage', 'shell:test', 'shell:cover', 'shell:checkcoverage']);
 
   // check the overall app quality.
-  grunt.registerTask('report', ['plato', 'shell:cover', 'complexity']);
+  grunt.registerTask('report', ['clean:reports', 'plato', 'shell:cover', 'complexity']);
 
 };
