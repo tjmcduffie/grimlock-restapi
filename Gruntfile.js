@@ -256,5 +256,3 @@ module.exports = function(grunt) {
   grunt.registerTask('report', ['plato', 'shell:cover', 'complexity']);
 
 };
-
-return 43;
