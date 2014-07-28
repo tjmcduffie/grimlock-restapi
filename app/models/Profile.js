@@ -40,22 +40,36 @@ ProfileSchema.set('toJSON', { getters: true });
 
 
 // Schema Hooks
-// ProfileSchema.pre('save', function (next) {
-//   console.log(this);
-//   console.log(arguments[0]);
-//   console.log(arguments[1]);
-//   next();
+// ProfileSchema.post('remove', function (data) {
+//   var referenceDocuments = {};
+
+//   // if reference documents are already hydrated this can be simplified.
+//   ['projects', 'employments', 'educations'].map(function(value) {
+//     if (data[value].length > 0) {
+//       for(var i = 0; i < data[value].length; i++) {
+//         referenceDocuments[data[value][i]._id] = value;
+//       }
+//     }
+//   });
+
+//   for (var prop in referenceDocuments) {
+//     // will these already be hydrated?
+//     var model;
+//     switch referenceDocuments[prop] {
+//       case: 'profile':
+//         model = ProfileModel;
+//       case: 'employments':
+//         model = EmploymentModel;
+//       case: 'educations':
+//         model = EducationModel;
+//     }
+//     model.findOneAndRemove({_id, prop}, function(err) {
+//       if (!!err) {
+//         throw new Error('couldn\'t remove subdocument');
+//       }
+//     });
+//   }
 // });
-ProfileSchema.post('remove', function (data) {
-  console.log('Profile %s removed', data._id);
-});
-
-
-
-// Schema Validations
-// ProfileSchema.path('name.first').validate(function (prop) {
-//   return typeof prop !== 'undefined' && prop.length > 0;
-// }, 'First name cannot be blank');
 
 
 ProfileSchema.methods = {};
