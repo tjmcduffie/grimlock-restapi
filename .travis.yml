@@ -1,5 +1,10 @@
 language: node_js
 node_js:
   - "0.10"
+services:
+  - mongodb
+before_script:
+  - sleep 15
+  - mongo grimlock-dev --eval 'db.addUser("travis", "test");'
 after_success:
   - ./node_modules/.bin/grunt report
