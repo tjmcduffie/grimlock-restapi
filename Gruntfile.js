@@ -63,15 +63,12 @@ module.exports = function(grunt) {
             'spec/ --color --growl'
       },
       cover: {
-        options: {
-          stdout: true
-        },
         command: './node_modules/istanbul/lib/cli.js cover --dir <%= config.files.reportsdir %>/coverage ' +
             './node_modules/jasmine-node/bin/jasmine-node -- spec/'
       },
       checkcoverage: {
-        command: './node_modules/istanbul/lib/cli.js check-coverage --statement 90 --branch 90 ' +
-            '--function 100 --lines 90'
+        command: './node_modules/istanbul/lib/cli.js check-coverage --statement 75 --branch 75 ' +
+            '--function 75 --lines 75'
       }
     },
 
@@ -217,6 +214,13 @@ module.exports = function(grunt) {
           '<%= config.files.tests %>'
         ],
         tasks: ['test']
+      },
+      unittest: {
+        files: [
+          '<%= config.files.app %>',
+          '<%= config.files.tests %>'
+        ],
+        tasks: ['jasmine_node']
       }
     }
 
@@ -249,11 +253,11 @@ module.exports = function(grunt) {
   grunt.registerTask('serve', ['test', 'start']);
 
   // Test scripts.
-  grunt.registerTask('test', ['clea:coverage', 'clea:complexity', 'jshint', 'jsvalidate', 'jasmine_node',
-      'shell:checkcoverage', 'complexity' ]);
+  grunt.registerTask('test', ['clean:coverage', 'clean:complexity', 'jshint', 'jsvalidate', 'jasmine_node',
+      'shell:cover', 'shell:checkcoverage', 'complexity' ]);
 
   // Coverage checking scripts.
-  grunt.registerTask('coverage', ['clea:coverage', 'shell:test', 'shell:cover', 'shell:checkcoverage']);
+  grunt.registerTask('cover', ['clean:coverage', 'shell:test', 'shell:cover', 'shell:checkcoverage']);
 
   // check the overall app quality.
   grunt.registerTask('report', ['clean:reports', 'plato', 'shell:cover', 'complexity']);
