@@ -1,42 +1,26 @@
 
 // Database connection string details
-
-module.exports.dev = {
-  name: 'Grimlock REST API Server - DEV',
-  db: 'mongodb://localhost/grimlock-dev',
-  ports: {
-    mongo: 27017,
-    server: 8080
+module.exports = {
+  base: {
+    ports: {
+      mongo: 27017,
+      server: 8080
+    }
+  },
+  dev: {
+    name: 'Grimlock REST API Server - DEV',
+    db: 'mongodb://localhost/grimlock-dev',
+    ports: {
+      mongo: 27017,
+      server: 8080
+    }
+  },
+  test: {
+    name: 'Grimlock REST API Server - TEST',
+    db: 'mongodb://localhost/grimlock-test',
+    ports: {
+      mongo: 27017,
+      server: 8080
+    }
   }
 };
-
-// exports.database = {
-//   // default options
-//   base: {
-//     host: "localhost",
-//     name: "grimlock-dev",
-//     // name: "grimlock-prod",
-//     port: 27017,
-//     serverOptions: {
-//       auto_reconnect: true
-//     },
-//     connectionOptions: {
-//     }
-//   }
-// };
-
-// exports.server = {
-//   hostname: 'localhost',
-//   port: 8080
-// };
-
-// exports.routes = [
-//   { pattern: '/user', method: 'post', controller: 'User.postUser' },
-//   { pattern: '/user/:id', method: 'get', controller: 'User.getUserByName' },
-//   { pattern: '/user/:id', method: 'put', controller: 'User.putUser' },
-//   { pattern: '/user/:id', method: 'delete', controller: 'User.deleteUser' },
-//   { pattern: '/profile', method: 'post', controller: 'Profile.postProfile' },
-//   { pattern: '/profile/:userid', method: 'get', controller: 'Profile.getProfileByName' },
-//   { pattern: '/profile/:uesrid', method: 'put', controller: 'Profile.putProfile' },
-//   { pattern: '/profile/:userid', method: 'delete', controller: 'Profile.deleteProfile' }
-// ];
