@@ -1,34 +1,12 @@
 /** REQUIREMENTS */
 var express = require('express');
-var mongoose = require('mongoose');
 
 // environment & config
 var env = process.env.NODE_ENV || 'dev';
 var config = require('./config/app')[env];
 
-
-/** MONGO */
-// connect to mongodb
-var connect = function () {
-  var options = {
-    server: {
-      socketOptions: { keepAlive: 1 }
-    }
-  };
-  mongoose.connect(config.db, options);
-};
-connect();
-
-// Error handler
-mongoose.connection.on('error', function (err) {
-  console.log('Mongo Error: ' + err);
-});
-
-// Reconnect when closed
-mongoose.connection.on('disconnected', function () {
-  connect();
-});
-
+/** connect to mongo */
+require('mongo-connector')();
 
 /** Express */
 // create server
