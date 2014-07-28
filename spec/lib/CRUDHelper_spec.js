@@ -21,7 +21,17 @@ describe('The CRUDHelper', function() {
       'formatted': 'tester mcdoofus'
     }
   };
-  var isError = false;
+  var fakeOneParamCallback = function(callback){
+    callback(undefined, {data: true});
+  };
+  var fakeTwoParamCallback = function(param1, callback){
+    param1 = null;
+    callback(undefined, {data: true});
+  };
+  var fakeThreeParamCallback = function(param1, param2, callback){
+    param1 = param2 = null;
+    callback(undefined, {data: true});
+  };
 
   beforeEach(function() {
     obj = new User(fakeUser);
@@ -31,16 +41,13 @@ describe('The CRUDHelper', function() {
     mongoResult = jasmine.createSpyObj('mongoResult', ['exec', 'limit', 'populate', 'select', 'skip']);
     res = jasmine.createSpyObj('res', ['json']);
 
-    spyOn(obj, 'save').andCallFake(function(callback){
-      var err = !isError ? {} : {err: true};
-      var data = isError ? {} : {data: true};
-      callback(err, data);
-    });
+    spyOn(obj, 'save').andCallFake(fakeOneParamCallback);
+    mongoResult.exec.andCallFake(fakeOneParamCallback);
 
     spyOn(UserModel, 'find').andReturn(mongoResult);
     spyOn(UserModel, 'findById').andReturn(mongoResult);
-    spyOn(UserModel, 'findByIdAndUpdate').andReturn(mongoResult);
-    spyOn(UserModel, 'findOneAndRemove').andReturn(mongoResult);
+    spyOn(UserModel, 'findByIdAndUpdate').andCallFake(fakeThreeParamCallback);
+    spyOn(UserModel, 'findOneAndRemove').andCallFake(fakeTwoParamCallback);
   });
 
   describe('has a create method', function() {
@@ -64,18 +71,19 @@ describe('The CRUDHelper', function() {
 
   describe('has a readOne method', function() {
     it('requires a mongoose object as the first param', function() {
-      expect(function() { crud.readOne(undefined, res); }).toThrow();
+      expect(function() { crud.readOne(undefined, res, fakeId); }).toThrow();
       expect(function() {
         crud.readOne(UserModel, res, fakeId);
       }).not.toThrow();
     });
     it('requires an express response object as the second param', function() {
-      expect(function() { crud.readOne(obj, undefined); }).toThrow();
+      expect(function() { crud.readOne(obj, undefined, fakeId); }).toThrow();
       expect(function() {
         crud.readOne(UserModel, res, fakeId);
       }).not.toThrow();
     });
     it('requires a third param, id, that it passes to the ODM', function() {
+      expect(function() { crud.readOne(obj, res, undefined); }).toThrow();
       expect(function() {
         crud.readOne(UserModel, res, fakeId);
       }).not.toThrow();
@@ -84,14 +92,20 @@ describe('The CRUDHelper', function() {
     });
     it('accepts a fourth optional param, options, that modifies the ODM query', function() {
       var options = {
-        'populate': 'foo'
+        populate: 'foo'
       };
+      crud.readOne(UserModel, res, fakeId, undefined);
+      expect(mongoResult.populate).not.toHaveBeenCalled();
       crud.readOne(UserModel, res, fakeId, options);
       expect(mongoResult.populate).toHaveBeenCalledWith(options.populate);
     });
-    it('should call the exec method on the result', function() {
+    it('should execute the db query', function() {
       crud.readOne(UserModel, res, fakeId);
       expect(mongoResult.exec).toHaveBeenCalled();
+    });
+    it('should send a response when the db call is complete', function() {
+      crud.readOne(UserModel, res, fakeId);
+      expect(res.json).toHaveBeenCalled();
     });
   });
 
@@ -141,8 +155,16 @@ describe('The CRUDHelper', function() {
     });
 
     it('should call the exec method on the result', function() {
+      expect(function() { crud.readMany(UserModel, res); }).not.toThrow();
       crud.readMany(UserModel, res);
       expect(mongoResult.exec).toHaveBeenCalled();
+    });
+    it('should throw an error when the query returns an error',function() {
+      mongoResult.exec.reset();
+      mongoResult.exec.andCallFake(function(callback) {
+        callback({message: 'error'}, undefined);
+      });
+      expect(function() { crud.readMany(UserModel, res); }).toThrow();
     });
   });
 
@@ -190,6 +212,10 @@ describe('The CRUDHelper', function() {
       expect(UserModel.findByIdAndUpdate.mostRecentCall.args[0]).toEqual(fakeId);
       expect(UserModel.findByIdAndUpdate.mostRecentCall.args[1]).toEqual(expectedData);
     });
+    it('should send a response when the db call is complete', function() {
+      crud.update(UserModel, res, fakeId, options);
+      expect(res.json).toHaveBeenCalled();
+    });
   });
 
   describe('has a del method', function() {
@@ -214,6 +240,10 @@ describe('The CRUDHelper', function() {
     it('should call the findOneAndRemove method on the result', function() {
       crud.del(UserModel, res, fakeId);
       expect(UserModel.findOneAndRemove).toHaveBeenCalled();
+    });
+    it('should send a response when the db call is complete', function() {
+      crud.del(UserModel, res, fakeId);
+      expect(res.json).toHaveBeenCalled();
     });
   });
 

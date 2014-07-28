@@ -2,25 +2,28 @@ var Response = require('../../app/lib/Response');
 
 
 describe('The Response normalizer', function() {
-  var resWithoutErrorWithoutData, resWithErrorWithoutData, resWithErrorWithData, resWithoutErrorWithData;
+  var resWithoutErrorWithoutData, resWithErrorWithoutData, resWithErrorWithData, resWithoutErrorWithData,
+      resWithErrorWithDataArray;
   var err = 'Test Error';
-  var data = {
+  var datum = {
     'foo': 'bar',
     'baz': 'bang'
   };
+  var data = [datum, datum, datum];
   beforeEach(function() {
     resWithoutErrorWithoutData = new Response();
     resWithErrorWithoutData = new Response(err, undefined);
-    resWithoutErrorWithData = new Response(undefined, data);
-    resWithErrorWithData = new Response(err, data);
+    resWithoutErrorWithData = new Response(undefined, datum);
+    resWithErrorWithData = new Response(err, datum);
+    resWithErrorWithDataArray = new Response(err, data);
   });
 
   // unit
-  it('doesn\'t require any data to generate a response', function() {
+  it('doesn\'t require any datum to generate a response', function() {
     expect(function() { new Response(undefined, undefined); }).not.toThrow();
   });
 
-  it('should send a 500 status when created without errors or data', function() {
+  it('should send a 500 status when created without errors or datum', function() {
     expect(resWithoutErrorWithoutData.getCode()).toEqual(500);
   });
 
@@ -28,8 +31,8 @@ describe('The Response normalizer', function() {
     expect(function() { new Response(err, undefined); }).not.toThrow();
   });
 
-  it('should accept a data object as the second param', function() {
-    expect(function() { new Response(undefined, data); }).not.toThrow();
+  it('should accept a datum object as the second param', function() {
+    expect(function() { new Response(undefined, datum); }).not.toThrow();
   });
 
   describe('handles errors', function() {
@@ -53,19 +56,21 @@ describe('The Response normalizer', function() {
     });
   });
 
-  describe('formats data into JSON which ', function() {
+  describe('formats datum into JSON which ', function() {
     it('contains the status message', function() {
       expect(resWithoutErrorWithoutData.getData().status).toBeDefined();
       expect(resWithErrorWithoutData.getData().status).toBeDefined();
       expect(resWithoutErrorWithData.getData().status).toBeDefined();
       expect(resWithErrorWithData.getData().status).toBeDefined();
+      expect(resWithErrorWithDataArray.getData().status).toBeDefined();
     });
 
-    it('contains the response data', function() {
+    it('contains the response datum', function() {
       expect(resWithoutErrorWithoutData.getData().data).toBeDefined();
       expect(resWithErrorWithoutData.getData().data).toBeDefined();
       expect(resWithoutErrorWithData.getData().data).toBeDefined();
       expect(resWithErrorWithData.getData().data).toBeDefined();
+      expect(resWithErrorWithDataArray.getData().data).toBeDefined();
     });
 
     it('contains any error messages', function() {
@@ -73,6 +78,7 @@ describe('The Response normalizer', function() {
       expect(resWithErrorWithoutData.getData().error).toBeDefined();
       expect(resWithoutErrorWithData.getData().error).toBeDefined();
       expect(resWithErrorWithData.getData().error).toBeDefined();
+      expect(resWithErrorWithDataArray.getData().error).toBeDefined();
     });
   });
 });
