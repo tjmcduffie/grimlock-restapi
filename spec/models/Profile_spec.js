@@ -17,7 +17,6 @@ describe('Profile model', function() {
     expect(function() {
       new ProjectModel(profileData);
     }).not.toThrow();
-    console.log('1');
   });
 
   describe('required properties', function() {
