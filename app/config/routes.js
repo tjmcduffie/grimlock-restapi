@@ -10,7 +10,6 @@ module.exports = function(app) {
 
   app.put('/user', user.createUser);
   app.get('/user/:id', user.readOneUser);
-  app.get('/user/:id/:detail', user.readOneUser);
   app.post('/user/:id', user.updateUser);
   app.del('/user/:id', user.deleteUser);
   app.get('/users/:page', user.readManyUsers);
