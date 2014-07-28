@@ -44,9 +44,7 @@ UserSchema.pre('save', function (next) {
   // Store the urlify'ed name as the url
   if (!this.slug) {
     var slug = this.name.formatted || (this.name.first + ' ' + this.name.last).trim();
-    if (!!slug) {
-      this.slug = urlify(slug);
-    }
+    this.slug = urlify(slug);
   }
   next();
 });
@@ -70,8 +68,6 @@ UserSchema.post('remove', function (data) {
       profile.remove();
       if (err) {
         console.log('Unable to remove profile %s while removing user %s', data.profile, data._id);
-      } else {
-        console.log('%s has been removed', data.profile);
       }
     });
   }
