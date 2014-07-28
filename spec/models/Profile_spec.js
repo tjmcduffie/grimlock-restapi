@@ -1,4 +1,4 @@
-/* global describe, it, expect, beforeEach, spyOn*/
+/* global describe, it, expect, beforeEach*/
 /** connect to mongo */
 var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('Profile');
@@ -23,12 +23,12 @@ describe('Profile model', function() {
   describe('required properties', function() {
 
     beforeEach(function() {
-      testUser = new ProjectModel(profileData);
+      testProfile = new ProjectModel(profileData);
     });
 
     it('includes a user reference', function(done) {
-      testUser.user = undefined;
-      testUser.save(function(err) {
+      testProfile.user = undefined;
+      testProfile.save(function(err) {
         expect(err).not.toBe(undefined);
         expect(err.name).toBe('ValidationError');
         done();

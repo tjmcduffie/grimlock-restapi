@@ -1,4 +1,4 @@
-/* global describe, it, expect, beforeEach, spyOn*/
+/* global describe, it, expect, beforeEach*/
 /** connect to mongo */
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
