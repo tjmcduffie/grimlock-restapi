@@ -6,7 +6,6 @@ var crud = require('../lib/CRUDHelper');
 
 module.exports = {
   createProfile: function(req, res) {
-    req.body.user = req.body.user || req.userid;
     var profile = new Profile(req.body);
     crud.create(profile, res);
   },
@@ -19,7 +18,8 @@ module.exports = {
     });
   },
   readManyProfiles: function(req, res) {
-    var page = decodeURIComponent(req.params.page) || 1;
+    var rawPage = parseInt(decodeURIComponent(req.params.page), 10);
+    var page = (typeof rawPage === 'number' && !isNaN(rawPage))  ? rawPage : 1;
     var isFull = decodeURIComponent(req.params.detail) === 'full';
     var limit = 20;
 
