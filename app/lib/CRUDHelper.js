@@ -9,16 +9,14 @@ module.exports = {
   },
 
   readOne: function(obj, res, id, options) {
-    var results = obj.findById(id);
-
     if (typeof id === 'undefined') {
       throw new Error('The readOne operation requires an id as the third parameter');
     }
 
-    if (options) {
-      if(options.populate) {
-        results.populate(options.populate);
-      }
+    var results = obj.findById(id);
+
+    if (!!options && !!options.populate) {
+      results.populate(options.populate);
     }
 
     results.exec(function(err, data) {
@@ -32,33 +30,27 @@ module.exports = {
 
     if (options) {
       if (options.skip) {
-        // console.log('skipping')
         results.skip(options.skip);
       }
 
       if (options.limit) {
-        // console.log('limiting')
         results.limit(options.limit);
       }
 
       if (options.select) {
-        // console.log('selecting')
         results.select(options.select);
       }
 
       if (options.populate) {
-        // console.log('populating')
         results.populate(options.populate);
       }
     }
 
-      // console.log('executing')
     results.exec(function(err, data) {
-      if (err) {
-        console.log(err);
+      if (!!err) {
+        throw new Error(err.message);
       }
       var response = new Response(err, data);
-      // console.log('responding')
       res.json(response.getCode(), response.getData());
     });
   },
@@ -77,6 +69,11 @@ module.exports = {
         updates[key][element.key] = element.value;
       }
     };
+
+
+    if (typeof obj === 'undefined') {
+      throw new Error('The update operation requires a mongoose model as the first parameter');
+    }
 
     if (typeof res === 'undefined') {
       throw new Error('The update operation requires a response object as the second parameter');
@@ -110,7 +107,9 @@ module.exports = {
       throw new Error('The delete operation requires an id as the third parameter');
     }
     obj.findOneAndRemove({_id: id}, function(err, data) {
-      data.remove();
+      if (!!data && !!data.remove) {
+        data.remove();
+      }
       var response = new Response(err, data);
       res.json(response.getCode(), response.getData());
     });
