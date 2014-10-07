@@ -34,13 +34,14 @@
     "grunt-plato": "^1.0.0",
     "grunt-complexity": "^0.2.0",
     "jasmine-node": "https://github.com/tjmcduffie/jasmine-node/archive/master.tar.gz",
-    "grunt-contrib-clean": "^0.5.0"
+    "grunt-contrib-clean": "^0.5.0",
+    "request": "^2.39.0"
   },
   "scripts": {
     "start": "NODE_ENV=dev ./node_modules/.bin/grunt start",
     "test": "NODE_ENV=test ./node_modules/.bin/grunt test",
-    "rawtest": "NODE_ENV=test ./node_modules/.bin/jasmine-node spec/ --color --verbose",
-    "cover": "./node_modules/istanbul/lib/cli.js cover ./node_modules/jasmine-node/bin/jasmine-node -- spec/",
-    "covertest": "./node_modules/istanbul/lib/cli.js test ./node_modules/jasmine-node/bin/jasmine-node -- spec/ --color --verbose"
+    "rawtest": "NODE_ENV=test ./node_modules/.bin/jasmine-node spec/unit/ --color --verbose",
+    "cover": "./node_modules/istanbul/lib/cli.js cover ./node_modules/jasmine-node/bin/jasmine-node -- spec/unit/",
+    "covertest": "./node_modules/istanbul/lib/cli.js test ./node_modules/jasmine-node/bin/jasmine-node -- spec/unit/ --color --verbose"
   }
 }

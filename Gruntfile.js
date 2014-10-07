@@ -20,19 +20,12 @@ module.exports = function(grunt) {
         gruntfile: 'Gruntfile.js',
         app: 'app/{,**/}*.js',
         tests: 'spec/{,**/}*.js',
+        unittests: 'spec/unit/{,**/}*.js',
+        integration: 'spec/integration/{,**/}*.js',
         reportsdir: 'reports'
       },
       node: appconfig,
       jshintrc: jshintrc
-    },
-
-    /*** Open task. */
-    open: {
-      /*** This fails to open. System thinks its a file and throws an error */
-      // postman: {
-      //   path: 'chrome-extension://fdmmgilgnpjigdojojpjoooidkmcomcm/index.html',
-      //   app: 'Google Chrome'
-      // }
     },
 
     /*** Shell commands. */
@@ -60,15 +53,15 @@ module.exports = function(grunt) {
           stdout: true
         },
         command: './node_modules/istanbul/lib/cli.js test ./node_modules/jasmine-node/bin/jasmine-node -- ' +
-            'spec/ --color --growl'
+            'spec/unit/ --color --growl'
       },
       cover: {
         command: './node_modules/istanbul/lib/cli.js cover --dir <%= config.files.reportsdir %>/coverage ' +
-            './node_modules/jasmine-node/bin/jasmine-node -- spec/'
+            './node_modules/jasmine-node/bin/jasmine-node -- spec/unit/'
       },
       checkcoverage: {
-        command: './node_modules/istanbul/lib/cli.js check-coverage --statement 75 --branch 75 ' +
-            '--function 75 --lines 75'
+        command: './node_modules/istanbul/lib/cli.js check-coverage --statement 99 --branch 75 ' +
+            '--function 75 --lines 100'
       }
     },
 
@@ -80,7 +73,9 @@ module.exports = function(grunt) {
         verbose: false,
         growl: true
       },
-      all: ['spec/']
+      all: ['spec/'],
+      unit: ['spec/unit/'],
+      integration: ['spec/integration/']
     },
 
     /*** JS Syntax checking. */
@@ -204,7 +199,7 @@ module.exports = function(grunt) {
         files: [
           '<%= config.files.gruntfile %>',
           '<%= config.files.app %>',
-          '<%= config.files.tests %>'
+          '<%= config.files.unittests %>'
         ],
         tasks: ['jshint']
       },
@@ -218,7 +213,7 @@ module.exports = function(grunt) {
       unittest: {
         files: [
           '<%= config.files.app %>',
-          '<%= config.files.tests %>'
+          '<%= config.files.unittests %>'
         ],
         tasks: ['jasmine_node']
       }

@@ -1,7 +1,7 @@
-var crud  = require('../../app/lib/CRUDHelper');
-var UserController = require('../../app/controllers/User');
-require('../../app/models/Profile');
-require('../../app/models/User');
+var crud  = require('../../../app/lib/CRUDHelper');
+var UserController = require('../../../app/controllers/User');
+require('../../../app/models/Profile');
+require('../../../app/models/User');
 
 
 describe('The User Controller', function() {
