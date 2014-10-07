@@ -10,11 +10,11 @@ module.exports = {
     crud.create(user, res);
   },
 
-  readOneUser: function(req, res) {
+  readOneUser: function(req, res, next) {
     var id = decodeURIComponent(req.params.id);
     crud.readOne(User, res, id, {
       populate: 'profile'
-    });
+    }, next);
   },
 
   readManyUsers: function(req, res) {
