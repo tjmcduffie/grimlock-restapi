@@ -8,26 +8,26 @@ var profile = require('../controllers/Profile');
 
 module.exports = function(app) {
 
-  app.put('/user', user.createUser);
-  app.get('/user/:id', user.readOneUser);
-  app.post('/user/:id', user.updateUser);
-  app.del('/user/:id', user.deleteUser);
-  app.get('/users/:page', user.readManyUsers);
-  app.get('/users/:page/:detail', user.readManyUsers);
+  app.put('/v1/user', user.createUser);
+  app.get('/v1/user/:id', user.readOneUser);
+  app.post('/v1/user/:id', user.updateUser);
+  app.delete('/v1/user/:id', user.deleteUser);
+  app.get('/v1/users/:page', user.readManyUsers);
+  app.get('/v1/users/:page/:detail', user.readManyUsers);
 
-  app.put('/profile', profile.createProfile);
-  app.get('/profile/:id', profile.readOneProfile);
-  app.get('/profile/:id/:detail', profile.readOneProfile);
-  app.post('/profile/:id', profile.updateProfile);
-  app.del('/profile/:id', profile.deleteProfile);
-  app.get('/profiles/:page', profile.readManyProfiles);
-  app.get('/profiles/:page/:detail', profile.readManyProfiles);
+  app.put('/v1/profile', profile.createProfile);
+  app.get('/v1/profile/:id', profile.readOneProfile);
+  app.get('/v1/profile/:id/:detail', profile.readOneProfile);
+  app.post('/v1/profile/:id', profile.updateProfile);
+  app.delete('/v1/profile/:id', profile.deleteProfile);
+  app.get('/v1/profiles/:page', profile.readManyProfiles);
+  app.get('/v1/profiles/:page/:detail', profile.readManyProfiles);
 
   // app.put('/education', education.createEducation);
   // app.get('/education/:slug', education.readOneEducation);
   // //app.get('/education/:slug/:detail', education.readOneEducation);
   // app.post('/education/:id', education.updateEducation);
-  // app.del('/education/:id', education.deleteEducation);
+  // app.delete('/education/:id', education.deleteEducation);
   // app.get('/educations/:page', education.readManyEducations);
   // //app.get('/educations/:page/:detail', education.readManyEducations);
 
@@ -35,7 +35,7 @@ module.exports = function(app) {
   // app.get('/employment/:slug', employment.readOneEmployment);
   // app.get('/employment/:slug/:detail', employment.readOneEmployment);
   // app.post('/employment/:id', employment.updateEmployment);
-  // app.del('/employment/:id', employment.deleteEmployment);
+  // app.delete('/employment/:id', employment.deleteEmployment);
   // app.get('/employments/:page', employment.readManyEmployments);
   // app.get('/employments/:page/:detail', employment.readManyEmployments);
 
@@ -43,7 +43,7 @@ module.exports = function(app) {
   // app.get('/project/:slug', project.readOneProject);
   // app.get('/project/:slug/:detail', project.readOneProject);
   // app.post('/project/:id', project.updateProject);
-  // app.del('/project/:id', project.deleteProject);
+  // app.delete('/project/:id', project.deleteProject);
   // app.get('/projects/:page', project.readManyProjects);
   // app.get('/projects/:page/:detail', project.readManyProjects);
 
