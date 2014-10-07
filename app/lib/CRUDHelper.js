@@ -1,6 +1,11 @@
 var Response = require('../lib/Response');
 
 module.exports = {
+  /**
+   * Creates a new instance in the database via the mongoose object's save method.
+   * @param  {Object} obj Mongoose model instance.
+   * @param  {Object} res Server response object.
+   */
   create: function(obj, res) {
     obj.save(function(err, data) {
       var response = new Response(err, data);
@@ -8,11 +13,15 @@ module.exports = {
     });
   },
 
-  readOne: function(obj, res, id, options) {
-    if (typeof id === 'undefined') {
-      throw new Error('The readOne operation requires an id as the third parameter');
-    }
-
+  /**
+   * Reads a single object from the database based on supplied params.
+   * @param  {Objet} obj Mongoose model.
+   * @param  {Objet} res Server response object.
+   * @param  {String} id Id of the item to look up.
+   * @param  {Objet} options Mongo query options.
+   * @param  {Objet.<string>} options.populate A string of space separated subdocumets to populate.
+   */
+  readOne: function(obj, res, id, options, next) {
     var results = obj.findById(id);
 
     if (!!options && !!options.populate) {
@@ -25,9 +34,23 @@ module.exports = {
     });
   },
 
+  /**
+   * Reads multiple object from the database based on supplied params.
+   * @param  {Objet} obj Mongoose model.
+   * @param  {Objet} res Server response object.
+   * @param  {Objet} options Mongo query options.
+   * @param  {Objet.<number>} options.populate The number of items to offset query results.
+   * @param  {Objet.<number>} options.populate The number of items to return.
+   * @param  {Objet.<Object>} options.select A hash of schema fields to either enable or disable. A value of 1
+   *                                         enables the field, allowing for its return. A value of 0 disables
+   *                                         the field.
+   * @param  {Objet.<string>} options.populate A string of space separated subdocumets to populate.
+   */
+
   readMany: function(obj, res, options) {
     var results = obj.find();
 
+    // set options if they exist
     if (options) {
       if (options.skip) {
         results.skip(options.skip);
@@ -46,6 +69,7 @@ module.exports = {
       }
     }
 
+    // execute the query
     results.exec(function(err, data) {
       if (!!err) {
         throw new Error(err.message);
@@ -55,6 +79,14 @@ module.exports = {
     });
   },
 
+  /**
+   * Updates a single object in the database based on the supplied values.
+   * @param  {Objet} obj Mongoose model.
+   * @param  {Objet} res Server response object.
+   * @param  {String} id Id of the item to update.
+   * @param  {Objet} options Mongo query options.
+   * @param  {Objet.<Object>} options.receivedData Hash of data values to update
+   */
   update: function(obj, res, id, options) {
     var key = null;
     var updates = {
