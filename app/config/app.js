@@ -4,7 +4,7 @@ module.exports = {
   base: {
     ports: {
       mongo: 27017,
-      server: 8080
+      server: 8000
     }
   },
   dev: {
@@ -12,15 +12,15 @@ module.exports = {
     db: 'mongodb://localhost/grimlock-dev',
     ports: {
       mongo: 27017,
-      server: 8080
+      server: 8000
     }
   },
   test: {
     name: 'Grimlock REST API Server - TEST',
-    db: 'mongodb://localhost/grimlock-test',
+    db: 'mongodb://localhost/grimlock-dev',
     ports: {
       mongo: 27017,
-      server: 8080
+      server: 8000
     }
   }
 };
